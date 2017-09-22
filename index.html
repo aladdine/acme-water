@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<title>ACME WATER</title>
+
+		<!-- Bootsrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Bootstrap theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+		<!-- custom CSS -->
+		<link rel="stylesheet" type="text/css" href="./css/style.css">
+
+		<!-- jQuery -->
+		<script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+
+		<!-- Bootstrap JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+		<!-- Angular -->
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+
+    	<!-- root app -->
+    	<script src="./js/app.js"></script>
+
+    	<!-- services -->
+    	<script src="./js/services.js"></script>
+
+    
+
+	</head>
+
+	<body ng-app="acmeApp">
+
+		<div class="container" ng-controller="dataController">
+			<div class="col-md-12">
+				
+				<h1 class="center padding-40">Welcome to ACME Water Inc. Billing System</h1>
+				
+				<!-- form to upload data source and query params -->
+				<form class="col-md-8 col-md-push-2">
+					<div class="form-group">
+    					<label for="source-url">Data Source</label>
+    					<input type="text" name="source-url" class="form-control"  placeholder="./data/customers.csv" ng-model="source_url">
+ 		 			</div>
+ 		 			<p> Try sample: ./data/customers.csv </p>
+ 		 			<div class="form-group">
+    					<label for="billing-period">Billing Month/Year (MM/YY)</label>
+    					<input type="text" name="billing-period" class="form-control"  placeholder="08/17" ng-model="billing_period">
+ 		 			</div>
+ 		 			<button type="button" class="btn btn-md btn-default" ng-click="getCustomers(source_url)"> Get Customers </button>
+ 		 			<button type="button" class="btn btn-md btn-default" ng-click="sendBills(data,billing_period)" ng-if="data && billing_period"> Send Bills </button>
+ 		 			
+				</form>
+				
+				<!-- display errors -->
+				<div class="alert alert-danger col-md-8 col-md-push-2" role="alert" ng-show="error">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span> {{ error }}
+				</div>
+
+				<!-- display billing errors -->
+				<div class="alert alert-danger col-md-8 col-md-push-2" role="alert" ng-if="billing_errors.length > 0">
+					<span ng-repeat="billing_error in billing_errors">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<span class="sr-only">Error:</span> {{ billing_error }}
+					</span>
+				</div>
+
+				<!-- display success message -->
+				<div class="alert alert-success col-md-8 col-md-push-2" role="alert" ng-if="billing_errors.length == 0">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Congratulations:</span> All bills were sent successfully.
+				</div>
+
+			</div> <!-- ./col-md-12 -->
+
+			<!-- display data when available -->
+			<div class="col-md-12" ng-if="data">
+				<h2 class="center">List of customers</h2>
+				<table class="table">
+					<tr ng-repeat="data_row in data">
+						<td ng-repeat="data_cell in data_row"> {{data_cell}} </td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+
+	</body>
+</html>
